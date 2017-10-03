@@ -1,4 +1,5 @@
 #class interpolation:
+import numpy
 
 def linear_interpolation(image, pt1, pt2, unknown):
     """Computes the linear interpolation for the unknown values using pt1 and pt2
@@ -44,10 +45,16 @@ def bilinear_interpolation(image, pt1, pt2, pt3, pt4, unknown):
         xy1 = linear_interpolation(image, pt1, pt2, unknown)
         xy2 = linear_interpolation(image, pt3, pt4, unknown)
 
+
+    xy1 = numpy.float64(xy1)
+    xy2 = numpy.float64(xy2)
+
     if pt1[0] == pt3[0]:
         #if y1 == y2
         #only need interpolation on the x axis
         currInt = int((xy1 + xy2)/2)
+        if currInt > 250:
+            print(currInt)
     else:
         f1 = (unknown[0] - pt3[0])/(pt1[0] - pt3[0])*xy2
         f2 = (pt1[0] - unknown[0])/(pt1[0] - pt3[0])*xy1
