@@ -73,7 +73,7 @@ def main():
 
     else:
         if args.interpolate not in ["nearest_neighbor", "bilinear"]:
-            print("Invalid nterpolation method, using default=nearest_neighbor")
+            print("Invalid interpolation method, using default=nearest_neighbor")
             print("use the -h option to see usage information")
             interpolation = "nearest_neighbor"
         else:
