@@ -12,8 +12,10 @@ class cell_counting:
 
         regions = dict()
         blobs = dict()
-        k = 0
+        k = 1
         region = -1
+
+        print("Setting regions")
 
         for j in range(image.shape[0]):
             for i in range(image.shape[1]):
@@ -38,7 +40,7 @@ class cell_counting:
 
                     #current = (0, 0);
                     
-                    for coords in window:
+                    """for coords in window:
                         if image[coords[0]][coords[1]] == 255:
                             if region == -1 and coords in blobs:
                                 region = blobs[coords]
@@ -48,14 +50,50 @@ class cell_counting:
                                 blobs[coords] = k
                                 region = k
                                 k = k + 1
+                    """
+                    windowRegion = [0] * 9
+                    for i in range(9):
+                        coords = window[i]
+                        if image[coords[0]][coords[1]] == 255:
+                            if coords in blobs:
+                                windowRegion[i] = blobs[coords]
+                                region = blobs[coords]
+                            else:
+                                windowRegion[i] = -1
+
+                    if region == -1:
+                        region = k
+                        k += 1
+                        for i in range(9):
+                            if windowRegion[i] == 0:
+                                continue
+                            coords = window[i]
+                            blobs[coords] = region
+
+                    else:
+                        for i in range(9):
+                            if windowRegion[i] == 0:
+                                continue;
+                            coords = window[i]
+                            if region != windowRegion[i]:
+                                if windowRegion[i] != -1:
+                                #find all instances in the dict that have windowRegion[i] and replace them with region
+                                    for p, r in blobs.items():
+                                        if blobs[p] == windowRegion[i]:
+                                            blobs[p] = region
+                                else:
+                                    blobs[coords] = region
+
 
                     region = -1
 
-        for point, r in blobs.items():
+        print("Reversing Dictionary")
+
+        for p, r in blobs.items():
             if r in regions:
-                regions[r] = regions[r] + [point]
+                regions[r] = regions[r] + [p]
             else:
-                regions[r] = [point]
+                regions[r] = [p]
             
         return regions
 
@@ -66,6 +104,8 @@ class cell_counting:
         returns: area"""
 
         stats = dict()
+
+        print("The center of everything")
         
         for r in region.keys():
             maxx = 0
@@ -85,7 +125,7 @@ class cell_counting:
                 area = area + 1
             centerx = int((maxx + minx)/2)
             centery = int((maxy + miny)/2)
-            center = (centery, centerx)
+            center = (centerx, centery)
             if area >= 15:
                 stats[r] = (center, area)
 
@@ -105,10 +145,13 @@ class cell_counting:
         stats: stats regarding location and area
         returns: image marked with center and area"""
 
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+
         font = cv2.FONT_HERSHEY_SIMPLEX
 
         for r in stats.keys():
             center, area = stats[r]
-            cv2.putText(image,str(area),center, font, 1,(0,0,128))
+            cv2.circle(image,center, 3, (200,0,128), -1)
+            cv2.putText(image,str(area),center, font, 0.5,(255,0,255), 1)
 
         return image
