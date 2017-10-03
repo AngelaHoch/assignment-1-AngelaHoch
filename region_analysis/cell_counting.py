@@ -11,11 +11,10 @@ class cell_counting:
         #using white (255) as blob color
 
         regions = dict()
+        regionstemp = dict()
         blobs = dict()
         k = 1
         region = -1
-
-        print("Setting regions")
 
         for j in range(image.shape[0]):
             for i in range(image.shape[1]):
@@ -38,19 +37,6 @@ class cell_counting:
 
                     window = [(up, left),(up, i),(up, right),(j, left),point,(j, right),(down, left),(down, i),(down, right)]
 
-                    #current = (0, 0);
-                    
-                    """for coords in window:
-                        if image[coords[0]][coords[1]] == 255:
-                            if region == -1 and coords in blobs:
-                                region = blobs[coords]
-                            elif region != -1:
-                                blobs[coords] = region
-                            else:
-                                blobs[coords] = k
-                                region = k
-                                k = k + 1
-                    """
                     windowRegion = [0] * 9
                     for i in range(9):
                         coords = window[i]
@@ -87,13 +73,16 @@ class cell_counting:
 
                     region = -1
 
-        print("Reversing Dictionary")
-
         for p, r in blobs.items():
-            if r in regions:
-                regions[r] = regions[r] + [p]
+            if r in regionstemp:
+                regionstemp[r] = regionstemp[r] + [p]
             else:
-                regions[r] = [p]
+                regionstemp[r] = [p]
+
+        count = 0
+        for r, p in regionstemp.items():
+            regions[count] = p
+            count +=1
             
         return regions
 
