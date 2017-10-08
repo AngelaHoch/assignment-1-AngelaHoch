@@ -38,9 +38,13 @@ class resample:
         #print(newImage.shape)
         
         for j in range(sizey):
-            y = int(j / ((sizey) / (image.shape[0])))
+            y = int(round((j / float(fy)),0))
+            if y >= image.shape[0]:
+                y = image.shape[0] - 1
             for i in range(sizex):
-                x = int(i / ((sizex) / (image.shape[1])))
+                x = int(round((i / float(fx)),0))
+                if x >= image.shape[1]:
+                    x = image.shape[1] - 1
                 newImage[j][i] = image[y][x]
                 
         image = newImage
@@ -62,10 +66,10 @@ class resample:
         newImage = numpy.zeros((sizey, sizex))
 
         for j in range(sizey):
-            y = (j / ((sizey) / (image.shape[0])))
+            y = (j / float(fy))
             ytest = int(y)
             for i in range(sizex):
-                x = (i / ((sizex) / (image.shape[1])))
+                x = (i / float(fx))
                 xtest = int(x)                
                 if (y != ytest or x != xtest):
                     x1 = int(math.floor(x))

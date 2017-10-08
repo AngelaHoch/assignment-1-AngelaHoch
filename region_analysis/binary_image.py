@@ -56,7 +56,6 @@ class binary_image:
 
             threshold = (m1 + m2)/2
             
-
             deltam1 = (deltam1 - m1)
             deltam2 = (deltam2 - m2)
 

@@ -10,7 +10,7 @@ def linear_interpolation(image, pt1, pt2, unknown):
     return the f(unknown) or intensity at unknown"""
     f1 = (unknown[1] - pt1[1])/(pt2[1] - pt1[1])
     f1 = f1 *image[pt2[0]][pt2[1]]
-    f2 = (pt2[1] - unknown[1])/(pt2[1] - pt1[1])*image[pt1[0]][pt2[1]]
+    f2 = (pt2[1] - unknown[1])/(pt2[1] - pt1[1])*image[pt1[0]][pt1[1]]
     ft = f1 + f2
 
     return ft
@@ -53,8 +53,6 @@ def bilinear_interpolation(image, pt1, pt2, pt3, pt4, unknown):
         #if y1 == y2
         #only need interpolation on the x axis
         currInt = int((xy1 + xy2)/2)
-        if currInt > 250:
-            print(currInt)
     else:
         f1 = (unknown[0] - pt3[0])/(pt1[0] - pt3[0])*xy2
         f2 = (pt1[0] - unknown[0])/(pt1[0] - pt3[0])*xy1

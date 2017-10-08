@@ -93,8 +93,6 @@ class cell_counting:
         returns: area"""
 
         stats = dict()
-
-        print("The center of everything")
         
         for r in region.keys():
             maxx = 0
